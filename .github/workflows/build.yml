@@ -1,0 +1,9 @@
+name: build
+on: [push]
+
+jobs:
+  build:
+    runs-on: node:16-alpine
+    steps:
+      - run: npm install
+      - run: npm run build
