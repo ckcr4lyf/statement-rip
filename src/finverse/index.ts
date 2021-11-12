@@ -1,5 +1,5 @@
 import got from 'got';
-import { CustomerAccessTokenResponse, LinkTokenResponse } from './types';
+import { AuthTokenResponse, CustomerAccessTokenResponse, LinkTokenResponse } from './types';
 
 /**
  * Convenience wrapper for performing operations with Finverse API
@@ -38,11 +38,25 @@ export class FinverseClient {
             grant_type: 'client_credentials',
         }
 
-        console.log(body);
-        console.log(this.customerAccessToken);
+        // console.log(body);
+        // console.log(this.customerAccessToken);
 
         return got.post(`${this.baseUrl}/link/token`, {
             json: body,
+            headers: {
+                'Authorization': `Bearer ${this.customerAccessToken}`
+            }
+        }).json();
+    }
+
+    async exchangeCode(code: string): Promise<AuthTokenResponse> {
+        return got.post(`${this.baseUrl}/auth/token`, {
+            form: {
+                client_id: this.clientId,
+                code: code,
+                redirect_uri: this.redirectUri,
+                grant_type: 'authorization_code',
+            },
             headers: {
                 'Authorization': `Bearer ${this.customerAccessToken}`
             }
