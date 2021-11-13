@@ -12,11 +12,22 @@ export class JobQueue extends EventEmitter {
         super();
     }
 
+    async getStatements(liat: string){
+        const statementsOverview = await this.client.getStatementsOverview(liat);
+
+        if (statementsOverview.statements === null){
+            console.log(`No statements sagde`);
+            return;
+        }
+        
+        console.log(`Got ${statementsOverview.statements.length} statements.`);
+    }
+
     async poll(state: string, liat: string){
 
         // We keep polling every 10 sec till legit
         // Upto 3 mins (18 times)
-        console.log(liat);
+        console.log(`Will start polling`, liat);
 
         for (let i = 0; i < 18; i++){
             console.log(`Poll ${i+1}`);
@@ -34,10 +45,12 @@ export class JobQueue extends EventEmitter {
                 // to the frontend with details or shit
 
                 // Actually, probably here we want to trigger statement retrieval job
+                void this.getStatements(liat);
                 return;
             } else if (statementsStatus === 'WARNING'){
                 console.log('WARNING');
                 this.userRepo.setStatus(state, UserStatus.WARNING);
+                void this.getStatements(liat);
                 return;
             } else {
                 console.log(statementsStatus);

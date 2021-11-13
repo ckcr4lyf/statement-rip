@@ -31,3 +31,13 @@ export type LoginIdentityResponse = {
         status: string;
     }
 }
+
+export type StatementsOverviewResponse = {
+    statements: [
+        {
+            date: string,
+            id: string,
+            name: string,
+        }
+    ]
+}
