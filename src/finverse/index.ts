@@ -1,5 +1,5 @@
 import got from 'got';
-import { AuthTokenResponse, CustomerAccessTokenResponse, LinkTokenResponse } from './types';
+import { AuthTokenResponse, CustomerAccessTokenResponse, LinkTokenResponse, LoginIdentityResponse } from './types.js';
 
 /**
  * Convenience wrapper for performing operations with Finverse API
@@ -59,6 +59,14 @@ export class FinverseClient {
             },
             headers: {
                 'Authorization': `Bearer ${this.customerAccessToken}`
+            }
+        }).json();
+    }
+
+    async getLoginIdentity(liat: string): Promise<LoginIdentityResponse> {
+        return got.get(`${this.baseUrl}/login_identity`, {
+            headers: {
+                'Authorization': `Bearer ${liat}`
             }
         }).json();
     }

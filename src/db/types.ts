@@ -2,7 +2,10 @@ export enum UserStatus {
     POLLING = 'POLLING',
     FAILED = 'FAILED',
     SUCCESS = 'SUCCESS',
-    NOT_FOUND = 'NOT_FOUND',
+    WARNING = 'WARNING',
+    NOT_FOUND = 'NOT_FOUND', 
+    PROCESSING = 'PROCESSING', // Downloading / zipping statements
+    READY = 'READY', // Now hit another endpoint to get the zip? TBD
 }
 
 export interface UserRepo {

@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import { Request, Response, Router } from 'express';
 import { UserRepo } from '../db/types.js';
 import { FinverseClient } from '../finverse/index.js';
+import { JobQueue } from '../jobQueue/index.js';
 import { authToken } from './controllers/authToken.js';
 import { createLink } from './controllers/createLink.js';
 import { getStatus } from './controllers/status.js';
@@ -12,7 +13,7 @@ export declare interface ApiWrapper {
 }
 
 export class ApiWrapper extends EventEmitter {
-    constructor(private client: FinverseClient, private userRepo: UserRepo){
+    constructor(private client: FinverseClient, private userRepo: UserRepo, private jobQueue: JobQueue){
         super();
     }
 
@@ -21,7 +22,7 @@ export class ApiWrapper extends EventEmitter {
     }
 
     callback(req: Request, res: Response){
-        return authToken(req, res, this.client, this.userRepo);
+        return authToken(req, res, this.client, this.userRepo, this.jobQueue);
     }
 
     status(req: Request, res: Response){

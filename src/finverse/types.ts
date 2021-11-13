@@ -18,3 +18,16 @@ export type AuthTokenResponse = {
     refresh_token: string;
     token_type: string;
 }
+
+// For now only type the important shit
+export type LoginIdentityResponse = {
+    login_identity: {
+        product_status: {
+            statements: {
+                status: string,
+                status_details: string,
+            }
+        },
+        status: string;
+    }
+}
