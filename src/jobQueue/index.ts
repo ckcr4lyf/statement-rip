@@ -12,15 +12,27 @@ export class JobQueue extends EventEmitter {
         super();
     }
 
-    async getStatements(liat: string){
+    async getStatements(state: string, liat: string){
         const statementsOverview = await this.client.getStatementsOverview(liat);
 
         if (statementsOverview.statements === null){
             console.log(`No statements sagde`);
+            // Set status to not found?
+            this.userRepo.setStatus(state, UserStatus.NOT_FOUND);
             return;
         }
         
         console.log(`Got ${statementsOverview.statements.length} statements.`);
+
+        for (let i = 0; i < statementsOverview.statements.length; i++){
+
+            const statementId = statementsOverview.statements[i].id;
+
+            
+
+        }
+
+        // Now need to download all of them, and zip em up
     }
 
     async poll(state: string, liat: string){
@@ -45,12 +57,12 @@ export class JobQueue extends EventEmitter {
                 // to the frontend with details or shit
 
                 // Actually, probably here we want to trigger statement retrieval job
-                void this.getStatements(liat);
+                void this.getStatements(state, liat);
                 return;
             } else if (statementsStatus === 'WARNING'){
                 console.log('WARNING');
                 this.userRepo.setStatus(state, UserStatus.WARNING);
-                void this.getStatements(liat);
+                void this.getStatements(state, liat);
                 return;
             } else {
                 console.log(statementsStatus);
