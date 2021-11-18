@@ -10,7 +10,7 @@ export class LocalUserRepo implements UserRepo {
 
     getStatus(state: string): UserStatus {
         if ((state in this.statusStorage) === false){
-            return UserStatus.NOT_FOUND;
+            return UserStatus.UNKNOWN;
         }
 
         return this.statusStorage[state];

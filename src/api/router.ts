@@ -1,8 +1,8 @@
 import EventEmitter from 'events';
 import { Request, Response, Router } from 'express';
 import { UserRepo } from '../db/types.js';
-import { FinverseClient } from '../finverse/index.js';
-import { JobQueue } from '../jobQueue/index.js';
+import { FinverseClient } from '../finverse/finverse.js';
+import { JobQueue } from '../jobQueue/basicJobQueue.js';
 import { authToken } from './controllers/authToken.js';
 import { createLink } from './controllers/createLink.js';
 import { getStatus } from './controllers/status.js';
@@ -18,7 +18,7 @@ export class ApiWrapper extends EventEmitter {
     }
 
     link(req: Request, res: Response) {
-        return createLink(req, res, this.client);
+        return createLink(req, res, this.client, this.userRepo);
     }
 
     callback(req: Request, res: Response){

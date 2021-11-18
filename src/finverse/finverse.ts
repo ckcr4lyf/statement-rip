@@ -78,4 +78,12 @@ export class FinverseClient {
             }
         }).json();
     }
+
+    async downloadStatement(statementId: string, liat: string): Promise<Buffer> {
+        return got.get(`${this.baseUrl}/statements/${statementId}`, {
+            headers: {
+                'Authorization': `Bearer ${liat}`
+            }
+        }).buffer();
+    }
 }

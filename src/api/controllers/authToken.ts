@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserRepo, UserStatus } from "../../db/types.js";
-import { FinverseClient } from "../../finverse/index.js";
-import { JobQueue } from "../../jobQueue/index.js";
+import { FinverseClient } from "../../finverse/finverse.js";
+import { JobQueue } from "../../jobQueue/basicJobQueue.js";
 
 export const authToken = async (req: Request, res: Response, client: FinverseClient, userRepo: UserRepo, jobQueue: JobQueue) => {
     const code = <string> req.query.code;

@@ -4,11 +4,12 @@
 
 import EventEmitter from "events";
 import { UserRepo, UserStatus } from "../db/types.js";
-import { FinverseClient } from "../finverse/index.js";
+import { FinverseClient } from "../finverse/finverse.js";
+import { StorageService } from "../storage/index.js";
 
 export class JobQueue extends EventEmitter {
 
-    constructor(private client: FinverseClient, private userRepo: UserRepo){
+    constructor(private client: FinverseClient, private userRepo: UserRepo, private storageService: StorageService){
         super();
     }
 
@@ -25,12 +26,13 @@ export class JobQueue extends EventEmitter {
         console.log(`Got ${statementsOverview.statements.length} statements.`);
 
         for (let i = 0; i < statementsOverview.statements.length; i++){
-
-            const statementId = statementsOverview.statements[i].id;
-
-            
-
+            const statementInfo = statementsOverview.statements[i];
+            console.log(`Going to download statement: ${statementInfo.name} for ${statementInfo.date}`);
+            const statementData = await this.client.downloadStatement(statementInfo.id, liat);
+            await this.storageService.savePdf(state, statementData, statementInfo);
         }
+
+        this.userRepo.setStatus(state, UserStatus.SUCCESS);
 
         // Now need to download all of them, and zip em up
     }
@@ -51,7 +53,8 @@ export class JobQueue extends EventEmitter {
                 console.log(`Statements status undefined, will keep polling`);
             } if (statementsStatus === 'SUCCESS'){
                 console.log('We gucci');
-                this.userRepo.setStatus(state, UserStatus.SUCCESS);
+                // this.userRepo.setStatus(state, UserStatus.SUCCESS);
+                this.userRepo.setStatus(state, UserStatus.PROCESSING);
                 // If the frontend had an open WS to us, here is where we'd
                 // Fire an event, which would tell the WS handler to reply 
                 // to the frontend with details or shit
@@ -61,7 +64,8 @@ export class JobQueue extends EventEmitter {
                 return;
             } else if (statementsStatus === 'WARNING'){
                 console.log('WARNING');
-                this.userRepo.setStatus(state, UserStatus.WARNING);
+                // this.userRepo.setStatus(state, UserStatus.WARNING);
+                this.userRepo.setStatus(state, UserStatus.PROCESSING);
                 void this.getStatements(state, liat);
                 return;
             } else {

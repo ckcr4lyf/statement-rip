@@ -2,10 +2,11 @@ import express from 'express';
 import { createServer } from 'http';
 import { ApiWrapper, registerRouter } from './api/router.js';
 import { getConfig } from './config.js';
-import { LocalUserRepo } from './db/local.js';
+import { LocalUserRepo } from './db/localDb.js';
 import { UserStatus } from './db/types.js';
-import { FinverseClient } from './finverse/index.js';
-import { JobQueue } from './jobQueue/index.js';
+import { FinverseClient } from './finverse/finverse.js';
+import { JobQueue } from './jobQueue/basicJobQueue.js';
+import { LocalStorage } from './storage/localStorage.js';
 
 const config = getConfig();
 
@@ -18,7 +19,8 @@ await client.getCustomerToken();
 // We have a "JobManager" which is an EventEmitter
 // which we can pass in to the ApiWrapper to pass jobs
 // and whatnot
-const jobQueue = new JobQueue(client, localUserRepo);
+const localStorage = new LocalStorage();
+const jobQueue = new JobQueue(client, localUserRepo, localStorage);
 const wrapper = new ApiWrapper(client, localUserRepo, jobQueue);
 
 wrapper.on('newLink', (liat) => {

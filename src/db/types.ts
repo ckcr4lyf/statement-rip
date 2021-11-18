@@ -1,4 +1,6 @@
 export enum UserStatus {
+    UNKNOWN = 'UNKNOWN',
+    PRE_LINK = 'PRE_LINK',
     POLLING = 'POLLING',
     FAILED = 'FAILED',
     SUCCESS = 'SUCCESS',

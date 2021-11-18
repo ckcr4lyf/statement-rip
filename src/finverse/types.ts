@@ -32,12 +32,12 @@ export type LoginIdentityResponse = {
     }
 }
 
+export type StatementInfo = {
+    date: string,
+    id: string,
+    name: string,
+}
+
 export type StatementsOverviewResponse = {
-    statements: [
-        {
-            date: string,
-            id: string,
-            name: string,
-        }
-    ]
+    statements: StatementInfo[],
 }
