@@ -2,16 +2,14 @@
  * A basic Event Based job queue
  */
 
-import EventEmitter from "events";
 import { UserRepo, UserStatus } from "../db/types.js";
 import { FinverseClient } from "../finverse/finverse.js";
 import { StorageService } from "../storage/index.js";
 import { getLogger } from "../utils/logger.js";
 
-export class JobQueue extends EventEmitter {
+export class JobQueue {
 
     constructor(private client: FinverseClient, private userRepo: UserRepo, private storageService: StorageService){
-        super();
     }
 
     async getStatements(state: string, liat: string){

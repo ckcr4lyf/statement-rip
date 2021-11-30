@@ -2,14 +2,18 @@ import { Request, Response } from "express";
 import { UserRepo, UserStatus } from "../../db/types.js";
 import { FinverseClient } from "../../finverse/finverse.js";
 import { JobQueue } from "../../jobQueue/basicJobQueue.js";
+import { getLogger } from "../../utils/logger.js";
 
 export const authToken = async (req: Request, res: Response, client: FinverseClient, userRepo: UserRepo, jobQueue: JobQueue) => {
+
+    const logger = getLogger('authToken')
+    
     const code = <string> req.query.code;
     const state = <string> req.query.state;
     const error = <string> req.query.error;
 
     if (error !== undefined){
-        console.log('GG WE FUCKED UP');
+        logger.warn('GG WE FUCKED UP');
         return res.status(200).end();
     }
 
