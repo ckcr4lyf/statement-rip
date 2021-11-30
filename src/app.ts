@@ -22,7 +22,7 @@ await client.getCustomerToken();
 // and whatnot
 const localStorage = new LocalStorage();
 const jobQueue = new JobQueue(client, localUserRepo, localStorage);
-const wrapper = new ApiWrapper(client, localUserRepo, jobQueue);
+const wrapper = new ApiWrapper(client, localUserRepo, jobQueue, localStorage);
 const logger = getLogger('app')
 
 const router = registerRouter(wrapper);

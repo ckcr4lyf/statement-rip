@@ -21,5 +21,11 @@ const checkState = async () => {
     const data = await res.json();
 
     document.querySelector('#status').innerHTML = data.status;
+
+    if (data.status === 'SUCCESS'){
+        document.querySelector('#downloadclick').setAttribute('href', 'http://localhost:3000/download/' + state)
+        document.querySelector('#downloaddiv').setAttribute('style', 'display: block;');
+    }
+
     return data;
 }

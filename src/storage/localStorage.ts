@@ -80,4 +80,17 @@ export class LocalStorage implements StorageService {
         const finalFile = path.join(stateDirPath, 'download.zip');
         zip.writeZip(finalFile);
     }
+
+    async getZip(state: string): Promise<Buffer> {
+
+        const logger = getLogger('getZip');
+        const stateZipPath = path.join(this.tempDirPath, state, 'download.zip');
+
+        if (fs.existsSync(stateZipPath) === true){
+            const data = fs.promises.readFile(stateZipPath);
+            return data;
+        }
+
+        throw new Error("NON_EXIST");
+    }
 }
