@@ -6,9 +6,11 @@
 import os from 'os';
 import path from 'path';
 import fs from 'fs';
-import { ulid } from 'ulid';
+import AdmZip from 'adm-zip';
+
 import { StorageService } from './index.js';
 import { StatementInfo } from '../finverse/types.js';
+import { getLogger } from '../utils/logger.js';
 
 function isFsError(e: any): e is NodeJS.ErrnoException {
     if (typeof e.code === 'string'){
@@ -27,6 +29,7 @@ export class LocalStorage implements StorageService {
     }
 
     async savePdf(state: string, data: Buffer, statementInfo: StatementInfo){
+        const logger = getLogger('savePdf');
         const stateDirPath = path.join(this.tempDirPath, state);
         let pathInfo: fs.Stats;
 
@@ -55,6 +58,26 @@ export class LocalStorage implements StorageService {
         const filename = `${statementInfo.name} - ${statementInfo.date}.pdf`;
         const statementPath = path.join(stateDirPath, filename);
         await fs.promises.writeFile(statementPath, data);
-        console.log(`Saved PDF to ${statementPath}`);
+        logger.info(`Saved PDF to ${statementPath}`);
+    }
+
+    async prepareZip(state: string){
+        const logger = getLogger('prepareZip');
+        
+        // Get list of files
+        const stateDirPath = path.join(this.tempDirPath, state);
+        const files = await fs.promises.readdir(stateDirPath);
+
+        // Make the new zip thingy
+        const zip = new AdmZip();
+
+        for (let file of files){
+            const fileData = await fs.promises.readFile(path.join(stateDirPath, file));
+            zip.addFile(file, fileData);
+            logger.info(`Added ${file} to zip`);
+        }
+
+        const finalFile = path.join(stateDirPath, 'download.zip');
+        zip.writeZip(finalFile);
     }
 }

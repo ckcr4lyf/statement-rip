@@ -7,6 +7,7 @@ import { UserStatus } from './db/types.js';
 import { FinverseClient } from './finverse/finverse.js';
 import { JobQueue } from './jobQueue/basicJobQueue.js';
 import { LocalStorage } from './storage/localStorage.js';
+import { getLogger } from './utils/logger.js';
 
 const config = getConfig();
 
@@ -22,18 +23,14 @@ await client.getCustomerToken();
 const localStorage = new LocalStorage();
 const jobQueue = new JobQueue(client, localUserRepo, localStorage);
 const wrapper = new ApiWrapper(client, localUserRepo, jobQueue);
-
-wrapper.on('newLink', (liat) => {
-    console.log('new link', liat);
-    localUserRepo.setStatus(liat.state, UserStatus.POLLING);
-});
+const logger = getLogger('app')
 
 const router = registerRouter(wrapper);
 
 app.use(router);
 
 createServer(app).listen(config.SERVER_PORT, config.SERVER_IP, () => {
-    console.log('Started');
+    logger.info('Started');
 });
 
 process.on('uncaughtException', (err) => {

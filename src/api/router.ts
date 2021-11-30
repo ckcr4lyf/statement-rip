@@ -12,9 +12,8 @@ export declare interface ApiWrapper {
     on(event: 'newLink', listener: (liat: statefulLiat) => void): this
 }
 
-export class ApiWrapper extends EventEmitter {
+export class ApiWrapper {
     constructor(private client: FinverseClient, private userRepo: UserRepo, private jobQueue: JobQueue){
-        super();
     }
 
     link(req: Request, res: Response) {
