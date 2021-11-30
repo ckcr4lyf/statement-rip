@@ -5,6 +5,9 @@ const getNewState = async () => {
 
     const data = await res.json();
 
+    document.querySelector('#newlink').setAttribute('style', 'display: none;');
+    document.querySelector('#checkstate').setAttribute('style', 'display: block;');
+    checkState();
     window.sessionStorage.setItem("state", data.state);
     window.open(data.link_url, '_blank').focus();
     return data;
