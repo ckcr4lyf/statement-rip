@@ -3,15 +3,17 @@ import { createServer } from 'http';
 import { ApiWrapper, registerRouter } from './api/router.js';
 import { getConfig } from './config.js';
 import { LocalUserRepo } from './db/localDb.js';
-import { UserStatus } from './db/types.js';
 import { FinverseClient } from './finverse/finverse.js';
 import { JobQueue } from './jobQueue/basicJobQueue.js';
 import { LocalStorage } from './storage/localStorage.js';
 import { getLogger } from './utils/logger.js';
+import cors from 'cors';
 
 const config = getConfig();
 
 const app = express();
+app.use(cors());
+
 const localUserRepo = new LocalUserRepo();
 const client = new FinverseClient(config.FV_CLIENT_ID, config.FV_CLIENT_SECRET, config.FV_REDIRECT_URI);
 await client.getCustomerToken();
