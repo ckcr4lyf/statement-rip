@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build-ci": "tsc -p .",
     "build": "tsc -p . && npm run build-web",
     "build-web": "node scripts/build_web.js",
     "yolo": "npm run build && node ./sandbox/fv.js",
