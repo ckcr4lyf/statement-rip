@@ -12,6 +12,11 @@ const webTemplatePath = path.join(__dirname, 'web_main.js');
 const finalBuildPath = path.join(__dirname, '../public/main.js');
 const webMain = (await fs.promises.readFile(webTemplatePath)).toString();
 
+const WEB_API_HOST = process.env.WEB_API_HOST;
+
+if (WEB_API_HOST === undefined){
+    throw new Error("WEB_API_HOST was undefined. Please provide it in your .env");
+}
 
 const replaced = webMain.replace('<<REPLACE_API_HOST>>', process.env.WEB_API_HOST);
 
