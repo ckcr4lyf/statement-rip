@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 config({ path: path.resolve(__dirname, '../.env') });
 
 const webTemplatePath = path.join(__dirname, 'web_main.js');
-const finalBuildPath = path.join(__dirname, '../public/main2.js');
+const finalBuildPath = path.join(__dirname, '../public/main.js');
 const webMain = (await fs.promises.readFile(webTemplatePath)).toString();
 
 
