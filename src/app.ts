@@ -9,6 +9,7 @@ import { LocalStorage } from './storage/localStorage.js';
 import { getLogger } from './utils/logger.js';
 import cors from 'cors';
 
+const logger = getLogger('app')
 const config = getConfig();
 
 const app = express();
@@ -18,6 +19,11 @@ const localUserRepo = new LocalUserRepo();
 const client = new FinverseClient(config.FV_CLIENT_ID, config.FV_CLIENT_SECRET, config.FV_REDIRECT_URI);
 await client.getCustomerToken();
 
+setInterval(async () => {
+    logger.info(`Refreshing customer access token`);
+    await client.getCustomerToken();
+}, 50 * 60 * 1000); // Every 50 mins
+
 // Maybe instead of wrapper being an EventEmitter
 // We have a "JobManager" which is an EventEmitter
 // which we can pass in to the ApiWrapper to pass jobs
@@ -25,7 +31,6 @@ await client.getCustomerToken();
 const localStorage = new LocalStorage();
 const jobQueue = new JobQueue(client, localUserRepo, localStorage);
 const wrapper = new ApiWrapper(client, localUserRepo, jobQueue, localStorage);
-const logger = getLogger('app')
 
 const router = registerRouter(wrapper);
 
