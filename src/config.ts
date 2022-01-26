@@ -15,6 +15,7 @@ export const getConfig = () => {
         FV_REDIRECT_URI: process.env.FV_REDIRECT_URI || '',
         SERVER_IP: process.env.SERVER_IP || '127.0.0.1',
         SERVER_PORT: parseInt(process.env.SERVER_PORT || '3000'),
-        WEB_API_HOST: process.env.WEB_API_HOST || 'localhost',
+        WEB_API_HOST: process.env.WEB_API_HOST || 'http://localhost/',
+        WEB_FRONTEND_HOST: process.env.WEB_FRONTEND_HOST || 'http://localhost/'
     }
 }

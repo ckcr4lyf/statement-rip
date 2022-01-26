@@ -36,7 +36,8 @@ export class FinverseClient {
             response_mode: 'form_post',
             response_type: 'code',
             grant_type: 'client_credentials',
-            products_supported: ['STATEMENTS']
+            products_supported: ['STATEMENTS'],
+            ui_mode: 'redirect'
         }
 
         return got.post(`${this.baseUrl}/link/token`, {

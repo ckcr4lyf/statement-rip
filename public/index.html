@@ -7,16 +7,16 @@
     <title>Document</title>
     <script src="./main.js"></script>
 </head>
-<body>
+<body onload="checkHash()">
 
     <div id="insturctions">
         <b>Instructions</b><br />
-        To use this, first click "Make new link". It will open Finverse's linking session in a new tab. <br />
+        To use this, first click "Make new link". You will be redirected to Finverse's linking session. <br />
         From there, you can select a bank to link with, enter your credentials, and wait till it reaches a success state. <br />
-        After that, come back to this tab, and click the "Check link status" button every now and then, till the server finished processing your account and you see the "Download" button.
+        After that, click continue, you will return to this app. Then click the "Check link status" button every now and then, till the server finished processing your account and you see the "Download" button.
     </div>
     
-    <div id="newlink">
+    <div id="newlink" style="display: none;">
         <button onclick="getNewState()">Make new link</button>
     </div>
     <div id="checkstate" style="display: none;">

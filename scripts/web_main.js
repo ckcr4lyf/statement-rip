@@ -6,12 +6,7 @@ const getNewState = async () => {
     });
 
     const data = await res.json();
-
-    document.querySelector('#newlink').setAttribute('style', 'display: none;');
-    document.querySelector('#checkstate').setAttribute('style', 'display: block;');
-    checkState();
-    window.sessionStorage.setItem("state", data.state);
-    window.open(data.link_url, '_blank').focus();
+    window.location = data.link_url;
     return data;
 }
 
@@ -34,3 +29,25 @@ const checkState = async () => {
 
     return data;
 }
+
+const checkHash = () => {
+
+    const hashVal = location.hash;
+    console.log(hashVal);
+
+    // The '#' + 26 char ULID (state)
+    if (hashVal.length !== 27) {
+        document.querySelector('#newlink').setAttribute('style', 'display: block;');
+        document.querySelector('#checkstate').setAttribute('style', 'display: none;');
+        return;
+    }
+
+    // Otherwise they have linked! This is the callback
+    const state = hashVal.substring(1);
+    window.sessionStorage.setItem("state", state);
+    
+    document.querySelector('#newlink').setAttribute('style', 'display: none;');
+    document.querySelector('#checkstate').setAttribute('style', 'display: block;');
+    checkState();
+}
+
