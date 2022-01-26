@@ -39,9 +39,6 @@ export class FinverseClient {
             products_supported: ['STATEMENTS']
         }
 
-        // console.log(body);
-        // console.log(this.customerAccessToken);
-
         return got.post(`${this.baseUrl}/link/token`, {
             json: body,
             headers: {
