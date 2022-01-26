@@ -36,6 +36,7 @@ export class FinverseClient {
             response_mode: 'form_post',
             response_type: 'code',
             grant_type: 'client_credentials',
+            products_supported: ['STATEMENTS']
         }
 
         // console.log(body);
