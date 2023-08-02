@@ -11,7 +11,7 @@ export class FinverseClient {
 
     constructor(private clientId: string, private clientSecret: string, private redirectUri: string){
         this.customerAccessToken = '';
-        this.baseUrl = 'https://api.sandbox.finverse.net';
+        this.baseUrl = 'https://api.prod.finverse.net';
     }
 
     async getCustomerToken(){
